@@ -4,7 +4,7 @@ This is a small workflow to experiment with ansible-playbook
 ## To deploy hello app
 * `bin/local_dev up`
 * `ansible-playbook -i inventory/local hello.yml`
-* [http://localhost:8080](http://localhost:8080)
+* [view the running app at http://localhost:8080](http://localhost:8080)
 
 ## To destroy local environment
 * `bin/local_dev down`
