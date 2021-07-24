@@ -26,3 +26,9 @@ This is a small workflow to experiment with ansible-playbook
 * provision the local environment
 * build the source code
 * deploy the app
+
+`bin/local_dev down` will
+* terminate the running container
+
+### Advanced
+`bin/local_dev shell` will drop you in to a shell in the local environment for file system exploration and/or debugging
