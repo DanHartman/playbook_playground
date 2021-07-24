@@ -1,0 +1,67 @@
+- name: Download nginx version {{ nginx_version }}
+  get_url:
+    url: https://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
+    dest: /tmp/nginx-{{ nginx_version }}.tar.gz
+
+- name: Extract nginx-{{ nginx_version }}.tar.gz
+  ansible.builtin.unarchive:
+    src: /tmp/nginx-{{ nginx_version }}.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - libpcre3-dev
+  - libpcre3
+  - zlib1g
+  - zlib1g-dev
+  - libssl-dev
+
+- name: check if makefile exists
+  ansible.builtin.stat:
+    path: /tmp/nginx-{{ nginx_version }}/Makefile
+  register: makefile
+
+- name: create nginx makefile
+  shell:
+    chdir: /tmp/nginx-{{ nginx_version }}
+    cmd: ./configure
+  when: not makefile.stat.exists
+
+- name: check if nginx binary exists
+  ansible.builtin.stat:
+    path: /tmp/nginx-{{ nginx_version }}/objs/nginx
+  register: nginx
+
+- name: build nginx from source
+  make:
+    chdir: /tmp/nginx-{{ nginx_version }}
+  when: not nginx.stat.exists
+
+- name: symlink nginx binary to ${PATH}
+  ansible.builtin.file:
+    src: /tmp/nginx-{{ nginx_version }}/objs/{{ item }}
+    dest: /bin/{{ item }}
+    state: link
+  with_items:
+  - nginx
+
+- name: Create nginx directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+  - /usr/local/nginx/conf
+  - /usr/local/nginx/logs
+
+- name: copy nginx.conf to /usr/local/nginx/conf/nginx.conf
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /usr/local/nginx/conf/nginx.conf
+
+- name: start nginx or reload nginx configuration
+  shell:
+    cmd: nc -z -w 1 localhost {{ app_port }} && nginx -s reload || nginx

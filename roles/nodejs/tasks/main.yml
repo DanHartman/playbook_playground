@@ -1,0 +1,20 @@
+- name: Download node version {{ node_version }}
+  get_url:
+    url: https://nodejs.org/dist/v{{ node_version }}/node-v{{ node_version }}-linux-x64.tar.xz
+    dest: /tmp/node-v{{ node_version }}-linux-x64.tar.xz
+
+- name: Extract node-v{{ node_version }}-linux-x64.tar.xz
+  ansible.builtin.unarchive:
+    src: /tmp/node-v{{ node_version }}-linux-x64.tar.xz
+    dest: /tmp
+    remote_src: yes
+
+- name: symlink node binaries to ${PATH}
+  ansible.builtin.file:
+    src: /tmp/node-v14.17.3-linux-x64/bin/{{ item }}
+    dest: /bin/{{ item }}
+    state: link
+  with_items:
+  - node
+  - npm
+  - npx

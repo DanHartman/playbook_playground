@@ -1,0 +1,8 @@
+---
+- name: hello
+  hosts: all
+  become: true
+  roles:
+  - name: nodejs
+  - name: nginx
+  - name: app

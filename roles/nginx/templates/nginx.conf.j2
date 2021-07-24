@@ -1,0 +1,18 @@
+events {}
+http {
+  server {
+    listen {{ app_port }};
+
+    root {{ app_root_directory }};
+
+    location / {
+      index index.htm index.html;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+      root {{ app_root_directory }};
+      internal;
+    }
+  }
+}
