@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
+PATH=${PATH}:${DIR}
+SCRIPT_NAME=$(basename "$0")
+
+# exit 1 if any required executables are not present
+for c in \
+  ansible-playbook \
+  docker \
+  ssh-keygen \
+  ssh; \
+do
+  if ! command -v ${c} > /dev/null 2>&1; then
+    echo "executable '${c}' not found" 1>&2
+    exit 1
+  fi
+done
+
+YQ() {
+  ROOT_PATH=${DIR}/../
+
+  docker run --rm -i \
+    -v ${ROOT_PATH}:${ROOT_PATH} \
+    -w ${PWD} \
+    mikefarah/yq:4.11.1 "$@"
+}
+
+CONFIG=$(YQ eval '.local.hosts.localhost' ${DIR}/../inventory/local)
+
+IMAGE="$(basename "$(dirname ${DIR})")"
+SSH_KEY="${DIR}/../$(echo "${CONFIG}" | YQ eval '.ansible_ssh_private_key_file' -)"
+SSH_PORT="$(echo "${CONFIG}" | YQ eval '.ansible_port' -)"
+LOCAL_ENV_DIR="$(dirname ${SSH_KEY})"
+
+clean() {
+  rm -f ${SSH_KEY}
+  rm -f ${SSH_KEY}.pub
+  if ! test "$(docker images -q ${IMAGE}:latest 2> /dev/null)" == ""; then
+    docker image rm -f ${IMAGE}
+  fi
+  down
+}
+
+up() {
+  # on first run, generate ssh key pair
+  test -f ${SSH_KEY} || ssh-keygen -t rsa -f ${SSH_KEY} -N ""
+
+  PASSWORD=$(echo "${CONFIG}" | YQ eval '.ansible_sudo_pass' -)
+  PORT=$(echo "${CONFIG}" | YQ eval '.app_port' -)
+  # on first run, build the image
+  if test "$(docker images -q ${IMAGE}:latest 2> /dev/null)" == ""; then
+    docker build \
+      --build-arg ANSIBLE_USER=$(echo "${CONFIG}" | YQ eval '.ansible_user' -) \
+      --build-arg ANSIBLE_USER_PASSWORD=${PASSWORD} \
+      -t ${IMAGE} \
+      ${LOCAL_ENV_DIR}
+  fi
+  echo "The sudo password is ${PASSWORD}"
+
+  docker run --rm -t -d \
+    -p ${SSH_PORT}:22 \
+    -p ${PORT}:${PORT} \
+    --name "${SCRIPT_NAME}_${IMAGE}" \
+    ${IMAGE}
+}
+
+down(){
+  docker rm -f "${SCRIPT_NAME}_${IMAGE}"
+}
+
+shell() {
+  ssh \
+    -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    -o LogLevel=ERROR \
+    -p ${SSH_PORT} \
+    -i ${SSH_KEY} \
+    $(echo "${CONFIG}" | YQ eval '.ansible_user' -)@localhost
+}
+
+# execute arguments passed to ${SCRIPT_NAME}
+"$@"
