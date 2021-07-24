@@ -1,0 +1,9 @@
+local:
+  hosts:
+    localhost:
+      ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      ansible_port: 2222
+      ansible_ssh_private_key_file: infrastructure/environments/local/id_rsa
+      ansible_sudo_pass: adm!n
+      ansible_user: app
+      app_port: 8080
