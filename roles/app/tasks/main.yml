@@ -1,3 +1,15 @@
+- name: copy app source to host
+  ansible.builtin.copy:
+    force: yes
+    src: projects/{{ app }}
+    dest: /tmp/
+    mode: preserve
+
+- name: build app source
+  make:
+    chdir: /tmp/{{ app }}
+    target: build
+
 - name: delete app directories
   ansible.builtin.file:
     path: "{{ item }}"
@@ -11,18 +23,6 @@
     state: directory
   with_items:
   - "{{ app_root_directory }}"
-
-- name: copy app source to host
-  ansible.builtin.copy:
-    force: yes
-    src: projects/{{ app }}
-    dest: /tmp/
-    mode: preserve
-
-- name: build app source
-  make:
-    chdir: /tmp/{{ app }}
-    target: build
 
 - name: deploy app
   ansible.builtin.copy:
