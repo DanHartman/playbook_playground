@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
+PATH=${PATH}:${DIR}
+
+# remove previous build if present
+clean
+
+# build project and put output into artifact directory
+npm ci --prefix "${DIR}/../src"
+npm run export --prefix "${DIR}/../src"
+mv "${DIR}/../src/out" "${DIR}/../artifact"

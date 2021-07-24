@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
+PATH=${PATH}:${DIR}
+
+for i in \
+  ${DIR}/../artifact \
+  ${DIR}/../src/.next \
+  ${DIR}/../src/node_modules \
+  ${DIR}/../src/out; \
+do
+  rm -rf ${i}
+done
