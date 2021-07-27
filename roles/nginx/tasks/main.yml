@@ -58,7 +58,7 @@
   - /usr/local/nginx/logs
 
 - name: copy nginx.conf to /usr/local/nginx/conf/nginx.conf
-  ansible.builtin.template:
+  template:
     src: nginx.conf.j2
     dest: /usr/local/nginx/conf/nginx.conf
 

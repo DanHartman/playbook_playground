@@ -1,5 +1,5 @@
 - name: copy app source to host
-  ansible.builtin.copy:
+  copy:
     force: yes
     src: projects/{{ app }}
     dest: /tmp/
