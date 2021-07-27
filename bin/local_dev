@@ -9,7 +9,8 @@ for c in \
   ansible-playbook \
   docker \
   ssh-keygen \
-  ssh; \
+  ssh \
+  yq; \
 do
   if ! command -v ${c} > /dev/null 2>&1; then
     echo "executable '${c}' not found" 1>&2
@@ -26,11 +27,11 @@ YQ() {
     mikefarah/yq:4.11.1 "$@"
 }
 
-CONFIG=$(YQ eval '.local.hosts.localhost' ${DIR}/../inventory/local)
+CONFIG=$(yq eval '.local.hosts.localhost' ${DIR}/../inventory/local)
 
 IMAGE="$(basename "$(dirname ${DIR})")"
-SSH_KEY="${DIR}/../$(echo "${CONFIG}" | YQ eval '.ansible_ssh_private_key_file' -)"
-SSH_PORT="$(echo "${CONFIG}" | YQ eval '.ansible_port' -)"
+SSH_KEY="${DIR}/../$(echo "${CONFIG}" | yq eval '.ansible_ssh_private_key_file' -)"
+SSH_PORT="$(echo "${CONFIG}" | yq eval '.ansible_port' -)"
 LOCAL_ENV_DIR="$(dirname ${SSH_KEY})"
 
 clean() {
@@ -46,12 +47,12 @@ up() {
   # on first run, generate ssh key pair
   test -f ${SSH_KEY} || ssh-keygen -t rsa -f ${SSH_KEY} -N ""
 
-  PASSWORD=$(echo "${CONFIG}" | YQ eval '.ansible_sudo_pass' -)
-  PORT=$(echo "${CONFIG}" | YQ eval '.app_port' -)
+  PASSWORD=$(echo "${CONFIG}" | yq eval '.ansible_sudo_pass' -)
+  PORT=$(echo "${CONFIG}" | yq eval '.app_port' -)
   # on first run, build the image
   if test "$(docker images -q ${IMAGE}:latest 2> /dev/null)" == ""; then
     docker build \
-      --build-arg ANSIBLE_USER=$(echo "${CONFIG}" | YQ eval '.ansible_user' -) \
+      --build-arg ANSIBLE_USER=$(echo "${CONFIG}" | yq eval '.ansible_user' -) \
       --build-arg ANSIBLE_USER_PASSWORD=${PASSWORD} \
       -t ${IMAGE} \
       ${LOCAL_ENV_DIR}
@@ -76,7 +77,7 @@ shell() {
     -o LogLevel=ERROR \
     -p ${SSH_PORT} \
     -i ${SSH_KEY} \
-    $(echo "${CONFIG}" | YQ eval '.ansible_user' -)@localhost
+    $(echo "${CONFIG}" | yq eval '.ansible_user' -)@localhost
 }
 
 # execute arguments passed to ${SCRIPT_NAME}
