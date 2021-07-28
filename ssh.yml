@@ -1,0 +1,35 @@
+---
+- name: ssh
+  hosts: all
+  become: true
+  tasks:
+  - name: create oinstall group
+    group:
+      name: oinstall
+      gid: 54321
+  - name: Add the user 'oracle' with a specific uid and a primary group of 'oinstall'
+    ansible.builtin.user:
+      name: oracle
+      uid: 1040
+      group: oinstall
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /home/oracle/.ssh
+      state: directory
+      mode: '0700'
+      owner: oracle
+      group: oinstall
+  - name: Generate SSH keys
+    shell: printf 'y\n' | ssh-keygen -t rsa -b 4096 -N "" -f /home/oracle/.ssh/id_rsa
+  - name: Adding SSH Public keys to Authorized_keys file
+    shell: cat /home/oracle/.ssh/id_rsa.pub > /home/oracle/.ssh/authorized_keys
+  - name: Setting ownership for SSH keys
+    ansible.builtin.file:
+      path: /home/oracle/.ssh/{{ item }}
+      state: file
+      owner: oracle
+      group: oinstall
+    with_items: 
+    - id_rsa
+    - id_rsa.pub
+    - authorized_keys
