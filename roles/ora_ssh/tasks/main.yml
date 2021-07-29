@@ -1,0 +1,73 @@
+- name: get hosts
+  run_once: true
+  shell: echo "{{ ansible_play_hosts | join(" ") }}"
+  register: get_hosts
+
+- set_fact:
+    host_match: "{{ get_hosts.stdout }}"
+
+- name: copy ssh config
+  template:
+    src: ssh.config.j2
+    dest: /home/{{ item }}/.ssh/config
+  with_items:
+  - grid
+  - oracle
+
+- name: Generate SSH keys
+  become: false
+  run_once: true
+  local_action: shell printf 'y\n' | ssh-keygen -t rsa -b 4096 -N "" -f $(pwd)/{{ item }}_id_rsa
+  with_items:
+  - oracle
+  - grid
+
+- name: copy private keys to hosts
+  copy:
+    force: yes
+    src: "{{ item }}_id_rsa"
+    dest: /home/{{ item }}/.ssh/id_rsa
+    mode: preserve
+  with_items:
+  - oracle
+  - grid
+
+- name: copy public keys to hosts
+  copy:
+    force: yes
+    src: "{{ item }}_id_rsa.pub"
+    dest: /home/{{ item }}/.ssh/id_rsa.pub
+    mode: preserve
+  with_items:
+  - oracle
+  - grid
+
+- name: copy public keys to authorized_keys
+  copy:
+    force: yes
+    src: "{{ item }}_id_rsa.pub"
+    dest: /home/{{ item }}/.ssh/authorized_keys
+    mode: preserve
+  with_items:
+  - oracle
+  - grid
+
+- name: Setting ownership for oracle user SSH keys
+  ansible.builtin.file:
+    path: /home/{{ item.owner }}/.ssh/{{ item.path }}
+    state: file
+    owner: "{{ item.owner }}"
+    group: oinstall
+  with_items:
+  - path: id_rsa
+    owner: oracle
+  - path: id_rsa
+    owner: grid
+  - path: id_rsa.pub
+    owner: oracle
+  - path: id_rsa.pub
+    owner: grid
+  - path: authorized_keys
+    owner: oracle
+  - path: authorized_keys
+    owner: grid

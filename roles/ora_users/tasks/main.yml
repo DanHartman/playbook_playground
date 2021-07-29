@@ -1,0 +1,27 @@
+- name: create oinstall group
+  group:
+    name: oinstall
+    gid: 54321
+
+- name: Add users
+  ansible.builtin.user:
+    name: '{{ item.name }}'
+    uid: "{{ item.uid }}"
+    group: oinstall
+    shell: /bin/bash
+  with_items:
+  - name: grid
+    uid: 1041
+  - name: oracle
+    uid: 1040
+
+- name: Create /home/{{ item }}/.ssh directories
+  ansible.builtin.file:
+    path: /home/{{ item }}/.ssh
+    state: directory
+    mode: '0700'
+    owner: "{{ item }}"
+    group: oinstall
+  with_items:
+  - grid
+  - oracle
