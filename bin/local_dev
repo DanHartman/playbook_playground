@@ -8,8 +8,10 @@ SCRIPT_NAME=$(basename "$0")
 for c in \
   ansible-playbook \
   docker \
-  ssh-keygen \
+  jq \
+  spruce \
   ssh \
+  ssh-keygen \
   yq; \
 do
   if ! command -v ${c} > /dev/null 2>&1; then

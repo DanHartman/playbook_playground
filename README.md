@@ -12,8 +12,11 @@ This is a small workflow to experiment with ansible-playbook
 ## Required Dependencies
 * `ansible-playbook`
 * `docker`
+* `jq`
+* `spruce`
 * `ssh`
 * `ssh-keygen`
+* `yq`
 
 ### What's happening
 `bin/local_dev up` will,
