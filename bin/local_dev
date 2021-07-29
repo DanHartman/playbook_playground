@@ -27,11 +27,10 @@ YQ() {
     mikefarah/yq:4.11.1 "$@"
 }
 
-CONFIG=$(yq eval '.local.hosts.localhost' ${DIR}/../inventory/local)
+CONFIG=$(yq eval '.local.vars' ${DIR}/../inventory/local)
 
-IMAGE="$(basename "$(dirname ${DIR})")"
+export IMAGE="$(basename "$(dirname ${DIR})")"
 SSH_KEY="${DIR}/../$(echo "${CONFIG}" | yq eval '.ansible_ssh_private_key_file' -)"
-SSH_PORT="$(echo "${CONFIG}" | yq eval '.ansible_port' -)"
 LOCAL_ENV_DIR="$(dirname ${SSH_KEY})"
 
 clean() {
@@ -48,7 +47,6 @@ up() {
   test -f ${SSH_KEY} || ssh-keygen -t rsa -f ${SSH_KEY} -N ""
 
   PASSWORD=$(echo "${CONFIG}" | yq eval '.ansible_sudo_pass' -)
-  PORT=$(echo "${CONFIG}" | yq eval '.app_port' -)
   # on first run, build the image
   if test "$(docker images -q ${IMAGE}:latest 2> /dev/null)" == ""; then
     docker build \
@@ -57,17 +55,37 @@ up() {
       -t ${IMAGE} \
       ${LOCAL_ENV_DIR}
   fi
-  echo "The sudo password is ${PASSWORD}"
 
-  docker run --rm -t -d \
-    -p ${SSH_PORT}:22 \
-    -p ${PORT}:${PORT} \
-    --name "${SCRIPT_NAME}_${IMAGE}" \
-    ${IMAGE}
+
+  ENTRY="127.0.0.1 $(yq eval -j ${DIR}/../inventory/local | jq -r '.local.hosts | keys[]' | tr '\n' ' ')"
+  if ! cat /etc/hosts | grep "${ENTRY}" > /dev/null 2>&1; then
+    cat <<EOF 1>&2
+      modify your local /etc/hosts file with the following command
+      sudo privileges required
+
+      sudo echo "${ENTRY}" >> /etc/hosts
+EOF
+    exit 1
+  fi
+
+  test -f ${DIR}/../reverse_proxy.conf || rev_proxy > ${DIR}/../reverse_proxy.conf
+
+  echo "The sudo password is ${PASSWORD}"
+  docker-compose \
+    --project-name "${IMAGE}" \
+    --file <(pipe | yq eval -) \
+    up \
+    --detach \
+    --remove-orphans
 }
 
 down(){
-  docker rm -f "${SCRIPT_NAME}_${IMAGE}"
+  test -f ${DIR}/../reverse_proxy.conf && rm ${DIR}/../reverse_proxy.conf
+  docker-compose \
+    --project-name "${IMAGE}" \
+    --file <(pipe | yq eval -) \
+    down \
+    --remove-orphans
 }
 
 shell() {

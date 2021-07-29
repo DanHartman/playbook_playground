@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
+PATH=${PATH}:${DIR}
+SCRIPT_NAME=$(basename "$0")
+
+INVENTORY="${DIR}/../inventory/local"
+HOSTS="$(yq eval -j ${INVENTORY} | jq -r '.local.hosts | keys[]')"
+VERSION='version: "2.2"'
+SERVICES=""
+# echo ${HOSTS}
+# exit
+for host in ${HOSTS}; do
+  export HOST=${host}
+  export IMAGE="$(basename "$(dirname ${DIR})")"
+  export APP_PORT=$(yq eval ".local.hosts.${HOST}.app_port" ${INVENTORY})
+  export SSH_PORT=$(yq eval ".local.hosts.${HOST}.ansible_port" ${INVENTORY})
+  SERVICES="$(
+    spruce merge \
+      <(envsubst < ${DIR}/../compose_templates/service.yml) \
+      <(printf "${SERVICES}") \
+    )"
+done
+
+spruce merge \
+  <(printf "${VERSION}") \
+  <(printf "${SERVICES}")
