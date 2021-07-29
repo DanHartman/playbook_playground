@@ -18,15 +18,6 @@ do
   fi
 done
 
-YQ() {
-  ROOT_PATH=${DIR}/../
-
-  docker run --rm -i \
-    -v ${ROOT_PATH}:${ROOT_PATH} \
-    -w ${PWD} \
-    mikefarah/yq:4.11.1 "$@"
-}
-
 CONFIG=$(yq eval '.local.vars' ${DIR}/../inventory/local)
 
 export IMAGE="$(basename "$(dirname ${DIR})")"
