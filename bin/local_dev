@@ -53,10 +53,12 @@ up() {
   ENTRY="127.0.0.1 $(yq eval -j ${DIR}/../inventory/local | jq -r '.local.hosts | keys[]' | tr '\n' ' ')"
   if ! cat /etc/hosts | grep "${ENTRY}" > /dev/null 2>&1; then
     cat <<EOF 1>&2
-      modify your local /etc/hosts file with the following command
-      sudo privileges required
+      modify your local /etc/hosts file
+      root privileges will be required
+      append the following command to /etc/hosts
 
-      sudo echo "${ENTRY}" >> /etc/hosts
+      ${ENTRY}
+      
 EOF
     exit 1
   fi
