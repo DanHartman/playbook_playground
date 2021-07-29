@@ -23,7 +23,7 @@ This is a small workflow to experiment with ansible-playbook
 * on first run
   * build a docker image that will serve as our local environment
 * generate an ssh key pair that will be used for further provisioning
-* run a container that is now waiting for further interaction
+* run a number of containers that are now waiting for further interaction
 
 `ansible-playbook -i inventory/local hello.yml` will
 * provision the local environment
@@ -31,7 +31,7 @@ This is a small workflow to experiment with ansible-playbook
 * deploy the app
 
 `bin/local_dev down` will
-* terminate the running container
+* terminate the running container(s)
 
 ### Advanced
-`bin/local_dev shell` will drop you in to a shell in the local environment for file system exploration and/or debugging
+`bin/ssh -i /absolute/path/to/privateKey user@host` will drop you in to a shell in the local environment for file system exploration and/or debugging
