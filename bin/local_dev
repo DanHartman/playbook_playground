@@ -86,15 +86,5 @@ down(){
     --remove-orphans
 }
 
-shell() {
-  ssh \
-    -o StrictHostKeyChecking=no \
-    -o UserKnownHostsFile=/dev/null \
-    -o LogLevel=ERROR \
-    -p ${SSH_PORT} \
-    -i ${SSH_KEY} \
-    $(echo "${CONFIG}" | yq eval '.ansible_user' -)@localhost
-}
-
 # execute arguments passed to ${SCRIPT_NAME}
 "$@"

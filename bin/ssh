@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+DIR="$( cd "$( dirname "${0}" )" >/dev/null 2>&1 && pwd )"
+# PATH=${PATH}:${DIR}
+SCRIPT_NAME=$(basename "$0")
+
+while getopts :i: OPT
+do
+  case $OPT in
+    i) SSH_KEY=$OPTARG;;
+    \?) exit 1;;
+  esac
+done
+shift $((OPTIND-1))
+
+SSH_KEY="${SSH_KEY:-}"
+test -n "${SSH_KEY}" && {
+  test -f "${SSH_KEY}" || {
+    echo "file '${SSH_KEY}' not found"
+    exit 1
+  }
+  SSH_KEY="-i ${SSH_KEY}"
+}
+
+malformed() {
+  cat <<EOF 1>&2 && exit 1
+  malformed argument
+  example
+    $(basename ${DIR})/${SCRIPT_NAME} -i path/to/key user@host
+    $(basename ${DIR})/${SCRIPT_NAME} user@host
+EOF
+}
+
+test $(wc -w <<< "$@") -ne 1 && malformed
+
+USER="$(awk -F@ '{ print $1 }' <<< "$@")"
+HOST="$(awk -F@ '{ print $2 }' <<< "$@")"
+PORT=$(yq eval ".local.hosts.${HOST}.ansible_port" ${DIR}/../inventory/local)
+
+ssh \
+  -o StrictHostKeyChecking=no \
+  -o UserKnownHostsFile=/dev/null \
+  -o LogLevel=ERROR \
+  ${SSH_KEY} \
+  -p "${PORT}" \
+  "${USER}@${HOST}"
