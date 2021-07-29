@@ -1,9 +1,31 @@
 local:
   hosts:
-    localhost:
-      ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
-      ansible_port: 2222
-      ansible_ssh_private_key_file: infrastructure/environments/local/id_rsa
-      ansible_sudo_pass: adm!n
-      ansible_user: app
-      app_port: 8080
+    node-01:
+      ansible_port: 2201
+      app_port: 8001
+    node-02:
+      ansible_port: 2202
+      app_port: 8002
+    node-03:
+      ansible_port: 2203
+      app_port: 8003
+    node-04:
+      ansible_port: 2204
+      app_port: 8004
+    node-05:
+      ansible_port: 2205
+      app_port: 8005
+    node-06:
+      ansible_port: 2206
+      app_port: 8006
+    node-07:
+      ansible_port: 2207
+      app_port: 8007
+    node-08:
+      ansible_port: 2208
+      app_port: 8008
+  vars:
+    ansible_sudo_pass: adm!n
+    ansible_user: app
+    ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+    ansible_ssh_private_key_file: infrastructure/environments/local/id_rsa
