@@ -68,8 +68,6 @@ EOF
     exit 1
   fi
 
-  test -f ${DIR}/../reverse_proxy.conf || rev_proxy > ${DIR}/../reverse_proxy.conf
-
   echo "The sudo password is ${PASSWORD}"
   docker-compose \
     --project-name "${IMAGE}" \
