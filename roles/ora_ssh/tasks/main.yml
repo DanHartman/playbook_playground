@@ -32,16 +32,6 @@
   - oracle
   - grid
 
-- name: copy public keys to hosts
-  copy:
-    force: yes
-    src: "{{ item }}_id_rsa.pub"
-    dest: /home/{{ item }}/.ssh/id_rsa.pub
-    mode: preserve
-  with_items:
-  - oracle
-  - grid
-
 - name: copy public keys to authorized_keys
   copy:
     force: yes
@@ -52,7 +42,7 @@
   - oracle
   - grid
 
-- name: Setting ownership for oracle user SSH keys
+- name: Setting ownership for oracle & grid user SSH keys
   ansible.builtin.file:
     path: /home/{{ item.owner }}/.ssh/{{ item.path }}
     state: file
