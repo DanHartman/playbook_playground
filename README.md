@@ -21,6 +21,7 @@ This is a small workflow to experiment with ansible-playbook
 ## Required Dependencies
 * `ansible-playbook`
 * `docker`
+* `docker-compose`
 * `jq`
 * `spruce`
 * `ssh`

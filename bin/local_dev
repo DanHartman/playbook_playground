@@ -8,6 +8,7 @@ SCRIPT_NAME=$(basename "$0")
 for c in \
   ansible-playbook \
   docker \
+  docker-compose \
   jq \
   spruce \
   ssh \
