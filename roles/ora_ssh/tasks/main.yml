@@ -53,10 +53,6 @@
     owner: oracle
   - path: id_rsa
     owner: grid
-  - path: id_rsa.pub
-    owner: oracle
-  - path: id_rsa.pub
-    owner: grid
   - path: authorized_keys
     owner: oracle
   - path: authorized_keys
