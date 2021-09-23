@@ -34,4 +34,4 @@ This is a small workflow to experiment with ansible-playbook
 * terminate the running container(s)
 
 ### Advanced
-`bin/ssh -i /absolute/path/to/privateKey user@host` will drop you in to a shell in the local environment for file system exploration and/or debugging
+`bin/ssh -i infrastructure/environments/local/id_rsa app@node_01` will drop you in to a shell in the local environment for file system exploration and/or debugging
