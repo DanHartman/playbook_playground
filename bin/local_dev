@@ -50,7 +50,7 @@ up() {
   fi
 
 
-  ENTRY="127.0.0.1 $(yq eval -j ${DIR}/../inventory/local | jq -r '.local.hosts | keys[]' | tr '\n' ' ')"
+  ENTRY="127.0.0.1 $(yq eval -j ${DIR}/../inventory/local | jq -r '.local.hosts | keys | join(" ")')"
   if ! cat /etc/hosts | grep "${ENTRY}" > /dev/null 2>&1; then
     cat <<EOF 1>&2
       modify your local /etc/hosts file
@@ -58,7 +58,7 @@ up() {
       append the following command to /etc/hosts
 
       ${ENTRY}
-      
+
 EOF
     exit 1
   fi
