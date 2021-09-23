@@ -1,29 +1,165 @@
 local:
   hosts:
-    node-01:
+    node_01:
       ansible_port: 2201
       app_port: 8001
-    node-02:
+      addresses:
+      - SubnetAddress: 136.167.16.26
+        hosts_entry: ea-test-racdb-01.bc.edu ea-test-racdb-01
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 136.167.16.27
+        hosts_entry: ea-test-racdb-01-vip.bc.edu ea-test-racdb-01-vip
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 136.167.16.32
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 10.100.200.1
+        hosts_entry: ea-test-racdb-01-priv ea-test-racdb-01-priv.bc.edu
+        InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+    node_02:
       ansible_port: 2202
       app_port: 8002
-    node-03:
+      addresses:
+      - SubnetAddress: 136.167.16.28
+        hosts_entry: ea-test-racdb-02.bc.edu ea-test-racdb-02
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 136.167.16.29
+        hosts_entry: ea-test-racdb-02-vip.bc.edu ea-test-racdb-02-vip
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 136.167.16.33
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 10.100.200.2
+        hosts_entry: ea-test-racdb-02-priv ea-test-racdb-02-priv.bc.edu
+        InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+    node_03:
       ansible_port: 2203
       app_port: 8003
-    node-04:
+      addresses:
+      - SubnetAddress: 136.167.16.30
+        hosts_entry: ea-test-racdb-03.bc.edu ea-test-racdb-03
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 136.167.16.31
+        hosts_entry: ea-test-racdb-03-vip.bc.edu ea-test-racdb-03-vip
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 136.167.16.34
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+        InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+      - SubnetAddress: 10.100.200.3
+        hosts_entry: ea-test-racdb-03-priv ea-test-racdb-03-priv.bc.edu
+        InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+    node_04:
       ansible_port: 2204
       app_port: 8004
-    node-05:
+      addresses:
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.26
+        hosts_entry: ea-test-racdb-01.bc.edu ea-test-racdb-01
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.27
+        hosts_entry: ea-test-racdb-01-vip.bc.edu ea-test-racdb-01-vip
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.32
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+      - InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 10.100.200.1
+        hosts_entry: ea-test-racdb-01-priv ea-test-racdb-01-priv.bc.edu
+    node_05:
       ansible_port: 2205
       app_port: 8005
-    node-06:
+      addresses:
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.26
+        hosts_entry: ea-test-racdb-01.bc.edu ea-test-racdb-01
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.27
+        hosts_entry: ea-test-racdb-01-vip.bc.edu ea-test-racdb-01-vip
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.32
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+      - InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 10.100.200.1
+        hosts_entry: ea-test-racdb-01-priv ea-test-racdb-01-priv.bc.edu
+    node_06:
       ansible_port: 2206
       app_port: 8006
-    node-07:
+      addresses:
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.26
+        hosts_entry: ea-test-racdb-01.bc.edu ea-test-racdb-01
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.27
+        hosts_entry: ea-test-racdb-01-vip.bc.edu ea-test-racdb-01-vip
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.32
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+      - InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 10.100.200.1
+        hosts_entry: ea-test-racdb-01-priv ea-test-racdb-01-priv.bc.edu
+    node_07:
       ansible_port: 2207
       app_port: 8007
-    node-08:
+      addresses:
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.26
+        hosts_entry: ea-test-racdb-01.bc.edu ea-test-racdb-01
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.27
+        hosts_entry: ea-test-racdb-01-vip.bc.edu ea-test-racdb-01-vip
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.32
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+      - InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 10.100.200.1
+        hosts_entry: ea-test-racdb-01-priv ea-test-racdb-01-priv.bc.edu
+    node_08:
       ansible_port: 2208
       app_port: 8008
+      addresses:
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.26
+        hosts_entry: ea-test-racdb-01.bc.edu ea-test-racdb-01
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.27
+        hosts_entry: ea-test-racdb-01-vip.bc.edu ea-test-racdb-01-vip
+      - InterfaceName: eth0
+        InterfaceType: 1 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 136.167.16.32
+        hosts_entry: eatestdbscan eatestscandb.bc.edu
+      - InterfaceName: eth1
+        InterfaceType: 2 # InterfaceType values are defined in the grid install response file
+        SubnetAddress: 10.100.200.1
+        hosts_entry: ea-test-racdb-01-priv ea-test-racdb-01-priv.bc.edu
   vars:
     ansible_sudo_pass: adm!n
     ansible_user: app
