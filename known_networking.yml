@@ -1,0 +1,6 @@
+---
+- name: interpolation
+  hosts: all
+  become: yes
+  roles:
+  - ora_known_networking

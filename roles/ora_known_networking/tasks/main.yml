@@ -1,0 +1,21 @@
+- name: blah
+  shell: echo "{{ oracle_install_crs_config_networkInterfaceList }}"
+
+- name: make comma separated string of host names
+  debug:
+    msg: "{{ ansible_play_hosts_all | map('to_json') | join(',') }}"
+
+- name: print info
+  run_once: true
+  debug:
+    msg: >
+      this role writes to /etc/hosts_foo because the local
+      test environment runs in docker containers in which
+      /etc/hosts is treated differently
+
+- name: Add mappings to /etc/hosts_foo
+  blockinfile:
+    create: yes
+    path: /etc/hosts_foo
+    block: "{{ etc_hosts_block }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK #"

@@ -1,0 +1,20 @@
+oracle_install_crs_config_networkInterfaceList: "{{
+  addresses |
+  map(attribute='InterfaceName') |
+  zip( addresses | map(attribute='SubnetAddress')) | map('join', ':') |
+  zip( addresses | map(attribute='InterfaceType')) | map('join', ':') |
+  join(',')
+}}"
+
+etc_hosts_data: "{{
+  hostvars |
+  json_query('[' + ansible_play_hosts_all | map('to_json') | join(',') + ']') |
+  json_query('[].addresses[]')
+}}"
+
+etc_hosts_block: "{{
+  etc_hosts_data |
+  map(attribute='SubnetAddress') |
+  zip( etc_hosts_data | map(attribute='hosts_entry')) | map('join', ' ') |
+  join('\n')
+}}"
