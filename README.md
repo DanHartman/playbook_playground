@@ -7,13 +7,13 @@ This is a small workflow to experiment with ansible-playbook
   * perform the modification and run the command again
 * `ansible-playbook -i inventory/local hello.yml`
 * [view the running app at http://node_01:8001](http://node_01:8001)
-* [view the running app at http://node_02:8002](http://node_01:8001)
-* [view the running app at http://node_03:8003](http://node_01:8001)
-* [view the running app at http://node_04:8004](http://node_01:8001)
-* [view the running app at http://node_05:8005](http://node_01:8001)
-* [view the running app at http://node_06:8006](http://node_01:8001)
-* [view the running app at http://node_07:8007](http://node_01:8001)
-* [view the running app at http://node_08:8008](http://node_01:8001)
+* [view the running app at http://node_02:8002](http://node_02:8002)
+* [view the running app at http://node_03:8003](http://node_03:8003)
+* [view the running app at http://node_04:8004](http://node_04:8004)
+* [view the running app at http://node_05:8005](http://node_05:8005)
+* [view the running app at http://node_06:8006](http://node_06:8006)
+* [view the running app at http://node_07:8007](http://node_07:8007)
+* [view the running app at http://node_08:8008](http://node_08:8008)
 
 ## To destroy local environment
 * `bin/local_dev down`
