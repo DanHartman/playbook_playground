@@ -141,6 +141,7 @@ local:
         SubnetAddress: 10.100.200.1
         hosts_entry: test-racdb-01-priv test-racdb-01-priv.foo.com
     node_08:
+      override_value: foo
       ansible_port: 2208
       app_port: 8008
       addresses:
