@@ -37,7 +37,8 @@
   register: nginx
 
 - name: build nginx from source
-  make:
+  shell:
+    cmd: make
     chdir: /opt/nginx-{{ nginx_version }}
   when: not nginx.stat.exists
 

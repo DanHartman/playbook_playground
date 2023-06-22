@@ -6,9 +6,9 @@
     mode: preserve
 
 - name: build app source
-  make:
+  shell:
+    cmd: make build
     chdir: /tmp/{{ app }}
-    target: build
 
 - name: delete app directories
   ansible.builtin.file:
