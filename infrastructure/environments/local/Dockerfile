@@ -1,7 +1,5 @@
-ARG PYENV_VERSION=3.8.7
-ARG PYENV_ROOT=/opt/.pyenv
+FROM ubuntu:23.10
 
-FROM ubuntu:xenial-20210611 AS base
 ENV TZ="America/New_York"
 ENV DEBIAN_FRONTEND="noninteractive"
 ENV LC_ALL C
@@ -20,41 +18,8 @@ RUN apt update && apt install -y \
   openssh-server \
   sudo \
   apt-transport-https \
-  netcat
+  python-is-python3
 RUN service ssh start
-
-FROM base as python
-RUN apt update && apt install -y \
- libssl-dev \
- zlib1g-dev \
- libbz2-dev \
- libreadline-dev \
- libsqlite3-dev \
- llvm \
- libncurses5-dev \
- libncursesw5-dev \
- xz-utils \
- tk-dev \
- libxml2-dev \
- libxmlsec1-dev \
- libffi-dev \
- liblzma-dev \
- python-openssl
-ARG PYENV_ROOT
-ENV PYENV_ROOT=${PYENV_ROOT}
-RUN git clone https://github.com/pyenv/pyenv.git ${PYENV_ROOT}
-ENV PATH=${PATH}:${PYENV_ROOT}/bin
-ARG PYENV_VERSION
-ENV PYENV_VERSION=${PYENV_VERSION}
-RUN pyenv install ${PYENV_VERSION}
-
-FROM base as final
-#  bring in python
-ARG PYENV_VERSION
-ENV PYENV_VERSION=${PYENV_VERSION}
-ARG PYENV_ROOT
-ENV PATH="${PYENV_ROOT}/shims:${PATH}"
-COPY --from=python ${PYENV_ROOT} ${PYENV_ROOT}
 
 # create user
 ARG ANSIBLE_USER
