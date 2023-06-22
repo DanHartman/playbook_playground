@@ -6,14 +6,14 @@ This is a small workflow to experiment with ansible-playbook
   * this will fail on first run and tell you to modify your local `/etc/hosts`
   * perform the modification and run the command again
 * `ansible-playbook -i inventory/local hello.yml`
-* [view the running app at http://node_01:8001](http://node_01:8001)
-* [view the running app at http://node_02:8002](http://node_02:8002)
-* [view the running app at http://node_03:8003](http://node_03:8003)
-* [view the running app at http://node_04:8004](http://node_04:8004)
-* [view the running app at http://node_05:8005](http://node_05:8005)
-* [view the running app at http://node_06:8006](http://node_06:8006)
-* [view the running app at http://node_07:8007](http://node_07:8007)
-* [view the running app at http://node_08:8008](http://node_08:8008)
+* [view the running app at http://node-01:8001](http://node-01:8001)
+* [view the running app at http://node-02:8002](http://node-02:8002)
+* [view the running app at http://node-03:8003](http://node-03:8003)
+* [view the running app at http://node-04:8004](http://node-04:8004)
+* [view the running app at http://node-05:8005](http://node-05:8005)
+* [view the running app at http://node-06:8006](http://node-06:8006)
+* [view the running app at http://node-07:8007](http://node-07:8007)
+* [view the running app at http://node-08:8008](http://node-08:8008)
 
 ## To destroy local environment
 * `bin/local_dev down`
@@ -44,4 +44,4 @@ This is a small workflow to experiment with ansible-playbook
 * terminate the running container(s)
 
 ### Advanced
-`bin/ssh -i infrastructure/environments/local/id_rsa app@node_01` will drop you in to a shell in the local environment for file system exploration and/or debugging
+`bin/ssh -i infrastructure/environments/local/id_rsa app@node-01` will drop you in to a shell in the local environment for file system exploration and/or debugging

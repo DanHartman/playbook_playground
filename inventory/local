@@ -1,6 +1,6 @@
 local:
   hosts:
-    node_01:
+    node-01:
       ansible_port: 2201
       app_port: 8001
       addresses:
@@ -20,7 +20,7 @@ local:
         hosts_entry: test-racdb-01-priv test-racdb-01-priv.foo.com
         InterfaceName: eth1
         InterfaceType: 2 # InterfaceType values are defined in the grid install response file
-    node_02:
+    node-02:
       ansible_port: 2202
       app_port: 8002
       addresses:
@@ -40,7 +40,7 @@ local:
         hosts_entry: test-racdb-02-priv test-racdb-02-priv.foo.com
         InterfaceName: eth1
         InterfaceType: 2 # InterfaceType values are defined in the grid install response file
-    node_03:
+    node-03:
       ansible_port: 2203
       app_port: 8003
       addresses:
@@ -60,7 +60,7 @@ local:
         hosts_entry: test-racdb-03-priv test-racdb-03-priv.foo.com
         InterfaceName: eth1
         InterfaceType: 2 # InterfaceType values are defined in the grid install response file
-    node_04:
+    node-04:
       ansible_port: 2204
       app_port: 8004
       addresses:
@@ -80,7 +80,7 @@ local:
         InterfaceType: 2 # InterfaceType values are defined in the grid install response file
         SubnetAddress: 10.100.200.1
         hosts_entry: test-racdb-01-priv test-racdb-01-priv.foo.com
-    node_05:
+    node-05:
       ansible_port: 2205
       app_port: 8005
       addresses:
@@ -100,7 +100,7 @@ local:
         InterfaceType: 2 # InterfaceType values are defined in the grid install response file
         SubnetAddress: 10.100.200.1
         hosts_entry: test-racdb-01-priv test-racdb-01-priv.foo.com
-    node_06:
+    node-06:
       ansible_port: 2206
       app_port: 8006
       addresses:
@@ -120,7 +120,7 @@ local:
         InterfaceType: 2 # InterfaceType values are defined in the grid install response file
         SubnetAddress: 10.100.200.1
         hosts_entry: test-racdb-01-priv test-racdb-01-priv.foo.com
-    node_07:
+    node-07:
       ansible_port: 2207
       app_port: 8007
       addresses:
@@ -140,7 +140,7 @@ local:
         InterfaceType: 2 # InterfaceType values are defined in the grid install response file
         SubnetAddress: 10.100.200.1
         hosts_entry: test-racdb-01-priv test-racdb-01-priv.foo.com
-    node_08:
+    node-08:
       override_value: foo
       ansible_port: 2208
       app_port: 8008
